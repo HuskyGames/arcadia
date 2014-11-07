@@ -10,6 +10,7 @@ import java.awt.image.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
+import shooter.Shooter;
 
 public class Arcadia extends JPanel implements KeyListener, Runnable {
 	private final BufferedImage buffer;
@@ -107,6 +108,6 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 	}
 	
 	public static void main(String[] args) {
-		Arcadia.display(new Arcadia(new Game[] { new IntroGame(), new IntroGame(), new IntroGame() }));
+		Arcadia.display(new Arcadia(new Game[] { new IntroGame(), new Shooter(), new IntroGame() }));
 	}
 }
