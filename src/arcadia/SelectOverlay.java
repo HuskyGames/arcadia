@@ -22,6 +22,8 @@ public class SelectOverlay extends Overlay {
 	private Tweener tweener;
 	private final Tweener pulse;
 	
+	HashMap<Integer,Image> covers = new HashMap<Integer, Image>();
+	
 	class SinTweener extends Tweener {
 		private double a;
 		private double b;
@@ -83,9 +85,11 @@ public class SelectOverlay extends Overlay {
 			int xpos = xCoord[x];
 			if(tweener != null) { xpos += tweener.value(); }
 			
-			g2d.drawImage(games.get(c).cover(), xpos, 20, xpos + 864, 20 + 486, 0, 0, 1024, 576, null);
+			//This is bad because it resizes on the fly!  Resize moved to getCover()
+			//g2d.drawImage(getCover(c), xpos, 20, xpos + 864, 20 + 486, 0, 0, 1024, 576,null);
+			g2d.drawImage(getCover(c), xpos, 20, null);
 		}
-		
+
 		pulse.tick(0.025);
 		
 		g2d.setColor(new Color(0.0f, 0.3f, 0.3f, 1.0f));
@@ -125,5 +129,13 @@ public class SelectOverlay extends Overlay {
 		g2d.fillRect(358, 238, 308,   6);
 		g2d.fillRect(660,  66,   6, 178);
 		*/
+	}
+	
+	private Image getCover(int index) {
+		if (!covers.containsKey(index)) {
+			Image image = games.get(index).cover().getScaledInstance(864, 486,0);
+			covers.put(index, image);
+		}
+		return covers.get(index);
 	}
 }

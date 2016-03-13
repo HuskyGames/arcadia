@@ -19,6 +19,13 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 	private final Queue<Overlay> overlays;
 	private final Set<Integer> pressed;
 
+	//Framerate information
+	private String framerate = "";
+	private int framesCounted = 0;
+	private long lastFramerateUpdate = 0;
+	private static boolean showFPS = false;	//Set to true by passing in "-debug" as a parameter
+	private static boolean limitFPS = true;	//Set to false by passing in "-nolimit" as a parameter
+
 	private Arcadia() {
 		this.buffer   = new BufferedImage(Game.WIDTH, Game.HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		this.overlays = Collections.asLifoQueue(new LinkedList<Overlay>());
@@ -36,8 +43,20 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 	}
 
 	public void paint(Graphics g) {
+		framesCounted++;
 		synchronized(buffer) { 
 			((Graphics2D)g).drawImage(buffer, 0, 0, Game.WIDTH, Game.HEIGHT, null); 
+
+			if (showFPS) {
+				g.setColor(Color.WHITE);
+				g.drawString(framerate, 10, 20);
+			}
+		}
+
+		if (System.currentTimeMillis() - lastFramerateUpdate > 1000) {
+			lastFramerateUpdate = System.currentTimeMillis();
+			framerate = framesCounted + " fps";
+			framesCounted = 0;
 		}
 	}
 
@@ -75,7 +94,7 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 			repaint();
 			long total = System.currentTimeMillis() - start;
 
-			if(total < 1000 / FPS_GOAL) {
+			if(limitFPS && total < 1000 / FPS_GOAL) {
 				try { Thread.sleep(1000 / FPS_GOAL - total); }
 				catch(InterruptedException e) { }
 			}
@@ -106,19 +125,19 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
-		
+
 		hideMouse(frame);
-		
+
 		frame.setVisible(true);
 	}
-	
+
 	public static void hideMouse(JFrame frame) {
 		// Transparent 16 x 16 pixel cursor image.
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 
 		// Create a new blank cursor.
 		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-		    cursorImg, new Point(0, 0), "blank cursor");
+				cursorImg, new Point(0, 0), "blank cursor");
 
 		// Set the blank cursor to the JFrame.
 		frame.getContentPane().setCursor(blankCursor);
@@ -126,11 +145,24 @@ public class Arcadia extends JPanel implements KeyListener, Runnable {
 
 	public static void main(String[] args) {
 
-		//Allow the user to specify their own files
-		if (args.length > 0) {
+		//Handle arguments
+		for (String s : args) {
+			//Handle all commands that begin with "-"
+			if (s.startsWith("-")) {
+				switch (s.substring(1).toLowerCase()) {
+				case "debug":
+					showFPS = true;
+					break;
+				case "nolimit":
+					limitFPS = false;
+					break;
+				}
+			}
 
-		} else {
-			Arcadia.display(new Arcadia(new Game[] { new IntroGame(), new Shooter(), new DodgeGame(), new IntroGame() }));
+			//Handle all other commands
 		}
+
+		Arcadia.display(new Arcadia(new Game[] { new IntroGame(), new Shooter(), new DodgeGame(), new IntroGame() }));
+		//Arcadia.display(new Arcadia(new Game[] { new Shooter() }));
 	}
 }
