@@ -24,14 +24,14 @@ public class GameInput implements Input {
 	
 	private static final Map<Button, Integer> keycodes = new HashMap<>();
 	static {
-		keycodes.put(Button.L, KeyEvent.VK_LEFT  );
-		keycodes.put(Button.R, KeyEvent.VK_RIGHT );
-		keycodes.put(Button.U, KeyEvent.VK_UP    );
-		keycodes.put(Button.D, KeyEvent.VK_DOWN  );
-		keycodes.put(Button.A, KeyEvent.VK_Z     );
-		keycodes.put(Button.B, KeyEvent.VK_X     );
-		keycodes.put(Button.C, KeyEvent.VK_C     );
-		keycodes.put(Button.S, KeyEvent.VK_ESCAPE);
+		keycodes.put(Button.L, KeyEvent.VK_A  );
+		keycodes.put(Button.R, KeyEvent.VK_D );
+		keycodes.put(Button.U, KeyEvent.VK_W    );
+		keycodes.put(Button.D, KeyEvent.VK_S  );
+		keycodes.put(Button.A, KeyEvent.VK_1     );
+		keycodes.put(Button.B, KeyEvent.VK_2     );
+		keycodes.put(Button.C, KeyEvent.VK_3     );
+		keycodes.put(Button.S, KeyEvent.VK_4);
 	}
 	
 	public static int keycode(Button button) {
