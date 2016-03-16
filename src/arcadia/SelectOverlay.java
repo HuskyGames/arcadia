@@ -46,7 +46,7 @@ public class SelectOverlay extends Overlay {
 		this.pulse = new SinTweener(0.3, 1.0);	
 	}
 	
-	public synchronized void update(Set<Integer> pressed) {
+	public void update(Set<Integer> pressed) {
 		if(tweener != null) { 
 			if(tweener.isComplete()) { tweener = null; }
 			else { tweener.tick(0.05); }
@@ -69,7 +69,7 @@ public class SelectOverlay extends Overlay {
 		}
 	}
 		
-	public synchronized void draw(Graphics2D g2d) {
+	public void draw(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		

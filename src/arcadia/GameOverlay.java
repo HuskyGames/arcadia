@@ -24,7 +24,7 @@ public class GameOverlay extends Overlay {
 		this.game     = game;
 	}
 	
-	public synchronized void update(Set<Integer> pressed) {
+	public void update(Set<Integer> pressed) {
 		GameInput input = new GameInput(pressed);
 
 		if(input.pressed(S)) {
@@ -36,7 +36,7 @@ public class GameOverlay extends Overlay {
 		}
 	}
 		
-	public synchronized void draw(Graphics2D g2d) {
+	public void draw(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		g2d.drawImage(buffer, 0, 0, WIDTH, HEIGHT, null);

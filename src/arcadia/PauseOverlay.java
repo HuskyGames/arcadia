@@ -31,7 +31,7 @@ public class PauseOverlay extends Overlay {
 		this.quit     = false;
 	}
 	
-	public synchronized void update(Set<Integer> pressed) {
+	public void update(Set<Integer> pressed) {
 		GameInput input = new GameInput(pressed);
 		
 		if(input.pressed(A)) {
@@ -45,7 +45,7 @@ public class PauseOverlay extends Overlay {
 		if(input.pressed(D)) { quit = true;  }
 	}
 		
-	public synchronized void draw(Graphics2D g2d) {
+	public void draw(Graphics2D g2d) {
 		g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.7f));  
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		
