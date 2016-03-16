@@ -20,6 +20,8 @@ public class Arcadia extends JPanel implements KeyListener,Runnable {
 	private final Queue<Overlay> overlays;
 	private final Set<Integer> pressed;
 
+	final int FPS_GOAL = 30;
+
 	//Framerate information
 	private String framerate = "";
 	private String updateRate = "";
@@ -48,6 +50,7 @@ public class Arcadia extends JPanel implements KeyListener,Runnable {
 	}
 
 	public void paint(Graphics g) {
+		long start = System.currentTimeMillis();
 		framesCounted++;
 
 		synchronized(completeBuffer) {
@@ -66,12 +69,18 @@ public class Arcadia extends JPanel implements KeyListener,Runnable {
 			framesCounted = 0;
 		}
 
+		long total = System.currentTimeMillis() - start;
+		if(limitFPS && total < 1000 / FPS_GOAL) {
+			try { Thread.sleep(1000 / FPS_GOAL - total); }
+			catch(InterruptedException e) { }
+		}
+
 		repaint();
 	}
 
 	public void run() {
 		
-		final int FPS_GOAL = 30;
+		
 
 		while (true) {
 			updatesCounted++;
